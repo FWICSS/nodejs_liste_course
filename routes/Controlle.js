@@ -6,7 +6,18 @@ const router = express.Router();
 router.get('/liste/:pseudo/voir',function (req,res/*,Routes*/){
     res.setHeader('Content-type','application/json');
     req.params.pseudo;
-    var sql = "SELECT * FROM liste WHERE propriétaire = '" + req.params.pseudo +"';";
+    var sql = "SELECT * FROM liste WHERE proprietaire = '" + req.params.pseudo +"';";
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        // traitement du resultat
+        res.write(JSON.stringify(result));
+        res.end();
+    });
+})
+router.get('/liste',function (req,res/*,Routes*/){
+    res.setHeader('Content-type','application/json');
+    req.params.pseudo;
+    var sql = "SELECT * FROM liste;";
     con.query(sql, function (err, result) {
         if (err) throw err;
         // traitement du resultat
@@ -16,7 +27,7 @@ router.get('/liste/:pseudo/voir',function (req,res/*,Routes*/){
 })
 router.get('/liste/:pseudo/ajouter/:produit',function (req,res){
     res.setHeader('Content-type','application/json');
-        var sql = "INSERT INTO liste(intitulé,nombre,etat,propriétaire) " +
+        var sql = "INSERT INTO liste(intitulé,nombre,etat,proprietaire) " +
             "VALUES ('"+ req.params.produit +"',1,0,'"+req.params.pseudo+"');";
 
     con.query(sql, function (err, result) {
@@ -28,7 +39,7 @@ router.get('/liste/:pseudo/ajouter/:produit',function (req,res){
 })
 router.delete('/liste/:pseudo/supprimer/:produit',function (req,res){
     res.setHeader('Content-type','application/json');
-    var sql = "DELETE FROM liste WHERE intitulé = '"+req.params.produit+"' AND propriétaire = '"+req.params.pseudo+"';";
+    var sql = "DELETE FROM liste WHERE intitulé = '"+req.params.produit+"' AND proprietaire = '"+req.params.pseudo+"';";
 
     con.query(sql, function (err, result) {
         if (err) throw err;
@@ -39,7 +50,7 @@ router.delete('/liste/:pseudo/supprimer/:produit',function (req,res){
 })
 router.put('/liste/:pseudo/cocher/:produit',function (req,res){
     res.setHeader('Content-type','application/json');
-    var sql = "UPDATE liste SET etat='1' WHERE intitulé = '"+req.params.produit+"' AND propriétaire = '"+req.params.pseudo+"';";
+    var sql = "UPDATE liste SET etat='1' WHERE intitulé = '"+req.params.produit+"' AND proprietaire = '"+req.params.pseudo+"';";
 
     con.query(sql, function (err, result) {
         if (err) throw err;
@@ -50,7 +61,7 @@ router.put('/liste/:pseudo/cocher/:produit',function (req,res){
 })
 router.put('/liste/:pseudo/decocher/:produit',function (req,res){
     res.setHeader('Content-type','application/json');
-    var sql = "UPDATE liste SET etat='0' WHERE intitulé = '"+req.params.produit+"' AND propriétaire = '"+req.params.pseudo+"';";
+    var sql = "UPDATE liste SET etat='0' WHERE intitulé = '"+req.params.produit+"' AND proprietaire = '"+req.params.pseudo+"';";
 
     con.query(sql, function (err, result) {
         if (err) throw err;
